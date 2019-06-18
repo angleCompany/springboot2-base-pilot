@@ -3,10 +3,16 @@ server:
 
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost:1521/~/test
+    #url: jdbc:h2:tcp://localhost:1521/~/test
+    url: jdbc:h2:mem:testdb
     driver-class-name: org.h2.Driver
     username: sa
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
-    properties.hibernate.hbm2ddl.auto: none # 테이블 자동 생성 여부 (update : 자동 생성, none : 생성 안함)
+    properties.hibernate.hbm2ddl.auto: update # 테이블 자동 생성 여부 (update : 자동 생성, none : 생성 안함)
     showSql: true
+
+
+  h2:
+    console:
+      enabled: true
