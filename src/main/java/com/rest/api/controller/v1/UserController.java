@@ -3,6 +3,7 @@ package com.rest.api.controller.v1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.rest.api.advice.exception.CUserNotFoundException;
 import com.rest.api.entity.User;
 import com.rest.api.model.response.*;
 import com.rest.api.repo.UserJpaRepo;
@@ -32,9 +33,9 @@ public class UserController  {
 
     @ApiOperation(value = "회원 단건 조회", notes = "UserId로 회원을 조회한다.")
     @GetMapping(value = "/user/{msrl}")
-    public SingleResult<User> findUserById(@ApiParam(value = "회원 ID", required = true) @PathVariable Long msrl) {
+    public SingleResult<User> findUserById(@ApiParam(value = "회원 ID", required = true) @PathVariable Long msrl) throws Exception {
         // 결과데이터가 단일건인경우 getBasicResult를 이용해서 결과를 출력한다.
-        return responseService.getSingleResult(userJpaRepo.findById(msrl).orElse(null));
+        return responseService.getSingleResult(userJpaRepo.findById(msrl).orElseThrow(CUserNotFoundException::new));
 
     }
 
