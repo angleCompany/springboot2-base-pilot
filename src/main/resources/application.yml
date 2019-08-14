@@ -11,8 +11,9 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     properties.hibernate.hbm2ddl.auto: update # 테이블 자동 생성 여부 (update : 자동 생성, none : 생성 안함)
     showSql: true
-
-
   h2:
     console:
       enabled: true
+  messages:
+    basename: i18n/exception
+    encoding: UTF-8

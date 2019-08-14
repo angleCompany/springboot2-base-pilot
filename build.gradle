@@ -1,9 +1,11 @@
 plugins {
     id 'org.springframework.boot' version '2.1.4.RELEASE'
     id 'java'
+    id "org.sonarqube" version "2.7"
 }
 
 apply plugin: 'io.spring.dependency-management'
+apply plugin: "jacoco"
 
 group = 'com.rest'
 version = '0.0.1-SNAPSHOT'
@@ -31,4 +33,17 @@ dependencies {
     implementation 'io.springfox:springfox-swagger2:2.6.1'
     implementation 'io.springfox:springfox-swagger-ui:2.6.1'
     implementation 'net.rakugakibox.util:yaml-resource-bundle:1.1'
+}
+
+jacoco {
+    //toolVersion = "0.7.1.201405082137"
+    reportsDir = file("$buildDir/customJacocoReportDir")
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        //html.destination "${buildDir}/jacocoHtml"
+    }
 }
