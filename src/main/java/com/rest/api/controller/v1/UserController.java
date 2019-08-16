@@ -11,7 +11,9 @@ import com.rest.api.service.ResponseService;
 
 import io.swagger.annotations.*;
 
+// Swagger UI 적용
 // SwaggerUI http://localhost:8080/swagger-ui.html
+
 
 @Api(tags = {"1. User"})
 //@RequiredArgsConstructor ..//class상단에 선언하면 class내부에 final로 선언된 객체에 대해서 Constructor Injection을 수행합니다. 해당 어노테이션을 사용하지 않고 선언된 객체에 @Autowired를 사용해도 됩니다.
