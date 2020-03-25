@@ -2,6 +2,7 @@ package com.rest.api.advice;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.rest.api.advice.exception.CEmailSigninFailException;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import com.rest.api.model.response.CommonResult;
 import com.rest.api.service.ResponseService;
 
 import lombok.RequiredArgsConstructor;
+import sun.misc.CEFormatException;
 
 @RequiredArgsConstructor
 @RestControllerAdvice
@@ -35,6 +37,12 @@ public class ExceptionAdvice {
         return responseService.getFailResult(Integer.valueOf(getMessage("userNotFound.code")), getMessage("userNotFound.msg"));
     }
 
+    @ExceptionHandler(CEmailSigninFailException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResult emailSigninFailed(HttpServletRequest request, CEmailSigninFailException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("emailSigninFailed.code")), getMessage("emailSigninFailed.msg"));
+    }
+
     // code정보에 해당하는 메시지를 조회합니다.
     private String getMessage(String code) {
         return getMessage(code, null);
@@ -43,4 +51,6 @@ public class ExceptionAdvice {
     private String getMessage(String code, Object[] args) {
         return messageSource.getMessage(code, args, LocaleContextHolder.getLocale());
     }
+
+
 }

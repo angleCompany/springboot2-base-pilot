@@ -1,5 +1,6 @@
 package com.rest.api.controller.v1;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,16 +17,17 @@ import io.swagger.annotations.*;
 
 
 @Api(tags = {"1. User"})
-//@RequiredArgsConstructor ..//class상단에 선언하면 class내부에 final로 선언된 객체에 대해서 Constructor Injection을 수행합니다. 해당 어노테이션을 사용하지 않고 선언된 객체에 @Autowired를 사용해도 됩니다.
+@RequiredArgsConstructor //class상단에 선언하면 class내부에 final로 선언된 객체에 대해서 Constructor Injection을 수행합니다. 해당 어노테이션을 사용하지 않고 선언된 객체에 @Autowired를 사용해도 됩니다.
 @RestController // 결과 데이터를 JSON으로 내보냅니다.
 @RequestMapping(value = "/v1")
 public class UserController  {
-    @Autowired
-    UserJpaRepo userJpaRepo;
 
-    @Autowired
-    ResponseService responseService;
+    private final UserJpaRepo userJpaRepo;
+    private final ResponseService responseService;
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공후 access_token", required = true)
+    })
     @ApiOperation(value = "회원 리스트 조회", notes = "모든 회원을 조회한다.")
     @GetMapping(value = "/users")
     public ListResult<User> findAllUser() {
@@ -33,6 +35,9 @@ public class UserController  {
         return responseService.getListResult(userJpaRepo.findAll());
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공후 access_token", required = true)
+    })
     @ApiOperation(value = "회원 단건 조회", notes = "UserId로 회원을 조회한다.")
     @GetMapping(value = "/user/{msrl}")
     public SingleResult<User> findUserById(@ApiParam(value = "회원 ID", required = true) @PathVariable Long msrl,
@@ -42,6 +47,9 @@ public class UserController  {
 
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공후 access_token", required = true)
+    })
     @ApiOperation(value = "회원 입력", notes = "회원을 입력한다.")
     @PostMapping(value = "/user")
     public SingleResult<User> save(@ApiParam(value = "회원 아이디", required = true)
@@ -56,11 +64,13 @@ public class UserController  {
 
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공후 access_token", required = true)
+    })
     @ApiOperation(value = "회원 삭제", notes = "UserId로 회원을 삭제 한다.")
     @DeleteMapping(value = "/user/{msrl}")
     public CommonResult delete(@ApiParam(value = "회원 번호", required = true) @PathVariable Long msrl) {
         userJpaRepo.deleteById(msrl);
         return responseService.getSuccessResult();
     }
-
 }
