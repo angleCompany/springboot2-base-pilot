@@ -49,3 +49,7 @@ jacocoTestReport {
         //html.destination "${buildDir}/jacocoHtml"
     }
 }
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.1'
+}
